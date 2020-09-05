@@ -62,6 +62,34 @@ const init = async () => {
         }
     });
 
+    server.route({
+        method: 'GET',
+        path: '/concurrent/{fileName?}',
+        handler: (request, h) => {
+            let promise = new Promise((resolve, reject) => {
+                let fileName = request.params.fileName;
+                if (fileName === undefined) {
+                    console.log('reject with no file input')
+                    reject(new Error('No file input'));
+                } else {
+                    setTimeout(() => {
+                        fs.promises.readFile('./'+fileName, 'utf8')
+                            .then((data) => {
+                                console.log('Found file: ' + fileName);
+                                resolve(data);
+                            })
+                            .catch((error) => {
+                                console.log(error.stack);
+                                reject(error);
+                            });
+                    }, 3000);
+                }
+            });
+
+            return promise;
+        }
+    });
+
     await server.start();
     console.log('Server started at: ' + server.info.uri);
 
