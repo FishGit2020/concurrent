@@ -8,6 +8,8 @@ import { Avatar, IconButton } from "@material-ui/core";
 
 import SearchIcon from '@material-ui/icons/Search';
 
+import SidebarChat from './SidebarChat'
+
 function Sidebar() {
     return (
         <div className='sidebar'>
@@ -34,6 +36,12 @@ function Sidebar() {
                     <SearchIcon />
                     <input placeholder="Search or start new chat" type="text" />
                 </div>
+            </div>
+
+            <div className="sidebar__chats">
+                <SidebarChat />
+                <SidebarChat />
+                <SidebarChat />
             </div>
         </div>
     )
