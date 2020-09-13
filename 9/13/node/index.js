@@ -17,7 +17,6 @@ const init = async () => {
         }
     });
 
-
     server.route({
         method: 'GET',
         path: '/concurrent/{name?}',
@@ -37,7 +36,6 @@ const init = async () => {
         }
     });
 
-
     server.route({
         method: 'GET',
         path: '/readFile/{fileName?}',
@@ -49,7 +47,7 @@ const init = async () => {
                         return new Promise((resolve, reject) => {
                             setTimeout(() => {
                                 resolve(fileData);
-                            }, 3000);
+                            }, 1000);
                         });
                     })
                     .then((fileData) => {
@@ -65,6 +63,16 @@ const init = async () => {
                 console.log('missing file name');
                 return 'Need file name';
             };
+        }
+    });
+
+    server.route({
+        method: 'GET',
+        path: '/google',
+        handler: (request, h) => {
+            return h.response('redirect google')
+                .redirect('http://google.com')
+                .code(301);
         }
     });
 
