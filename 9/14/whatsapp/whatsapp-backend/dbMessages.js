@@ -5,6 +5,6 @@ const whatappSchema = mongoose.Schema({
     name: String,
     timestamp: String,
     received: Boolean
-})
+}, { collection: 'messageContent' });
 
 export default mongoose.model('messageContent', whatappSchema);
