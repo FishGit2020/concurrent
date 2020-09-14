@@ -23,7 +23,6 @@ function App() {
 
     const channel = pusher.subscribe("message");
     channel.bind("inserted", (newMessage) => {
-      alert(JSON.stringify(newMessage));
       setMessages([...messages, newMessage]);
     });
 
@@ -40,7 +39,7 @@ function App() {
     <div className="app">
       <div className="app__body">
         <Sidebar />
-        <Chat />
+        <Chat messages={messages}/>
       </div>
     </div>
   );
