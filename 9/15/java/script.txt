@@ -1,0 +1,10 @@
+
+use maven image to configure a different setting:
+docker pull maven:latest
+
+run maven container and work inside:
+docker run -it --name javaMavenTest maven:latest bash
+
+todo:
+use volume to work more smoothly.
+
