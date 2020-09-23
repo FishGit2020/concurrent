@@ -44,7 +44,7 @@ app.get('/health', (req, res) => {
 
 /**
  * @swagger
- *  /feelslike/:city?:
+ *  /feelslike/{city}:
  *    get:
  *      summary: Get feels like temperature of a city
  *      description: Call Open Weather API for city weather
@@ -58,14 +58,25 @@ app.get('/health', (req, res) => {
  *           description: A successfull response
  */
 app.get('/feelslike/:city?', (req, res) => {
-    console.log("Get feelslike");
+    console.log("Get feelslike call");
     
     if (req.params.city === undefined || req.params.city === "") {
         res.status(500).send("missing city params");
         return;
     }
 
-    res.send("Got" + req.params.city);
+    got(`http://api.openweathermap.org/data/2.5/weather?q=${req.params.city}&appid=${apiKey}&units=imperial`)
+        .then((data) => {
+            console.log("received weather: " + data.body);
+            return JSON.parse(data.body);
+        })
+        .then((weather) => {
+            res.send(weather.main);
+        })
+        .catch((error) => {
+            console.log(error.stack);
+            res.status(500).send(error.message);
+        })
 });
 
 app.listen(port, (req, res) => {
