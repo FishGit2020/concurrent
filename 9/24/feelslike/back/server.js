@@ -22,11 +22,13 @@ const dbUserPassword = 'dbUserPassword';
 const dbName = 'feelslikedb';
 const dbUrl = `mongodb+srv://${dbUser}:${dbUserPassword}@cluster0.evesq.mongodb.net/${dbName}?retryWrites=true&w=majority`;
 
-await mongoose.connect(dbUrl, {
+mongoose.connect(dbUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false,
   useCreateIndex: true
+}, (error) => {
+    console.log(error.stack);
 });
 
 // https://swagger.io/specification/
