@@ -1,3 +1,4 @@
 #!/bin/bash
 
-docker run -it -v $(pwd):/api -p 5000:8080 node bash
+docker build -t fishgit2020/nodemon:latest .
+docker run -it -v $(pwd):/api -w /api -p 5000:8080 fishgit2020/nodemon /bin/bash

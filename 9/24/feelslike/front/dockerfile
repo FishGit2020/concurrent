@@ -1,0 +1,3 @@
+FROM node
+WORKDIR /webapp
+RUN npx create-react-app feelslike
