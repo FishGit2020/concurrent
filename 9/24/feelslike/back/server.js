@@ -6,11 +6,15 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
 import mongoose from 'mongoose';
 import postUserInfo from './models/postUserInfo.js';
-import joi from 'joi';
+import Joi from 'joi';
 
 const app = express();
 const port = process.env.PORT || 8080;
 const apiKey = '3442bc148b46b294a5ce5abf9240896d';
+const userInfoSchema = Joi.object({
+    name: Joi.string().required(),
+    city: Joi.string().required()
+});
 
 // database connection
 const dbUser = 'dbUser';
@@ -120,15 +124,22 @@ app.get('/feelslike/:cityName?', (req, res) => {
 app.post('/saveUser', (req, res) => {
     console.log("post user and city");
 
+    userInfoSchema.validateAsync(req.body)
+        .then((validatedBody) => {
+            console.log("Data validated: " + validatedBody);
 
-
-    const post = new postUserInfo(req.body);
-    post.save()
-        .then((data) => {
-            res.status(201).send(data);
+            const post = new postUserInfo(validatedBody);
+            post.save()
+                .then((dbResponse) => {
+                    res.status(201).send(dbResponse);
+                })
+                .catch((error) => {
+                    consolg.log(error.stack);
+                    res.status(500).send(error.message);
+                })
         })
         .catch((error) => {
-            consolg.log(error.stack);
+            console.log(error.stack);
             res.status(500).send(error.message);
         })
 });
