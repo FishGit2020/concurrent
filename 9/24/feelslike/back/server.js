@@ -33,7 +33,12 @@ await mongoose.connect(dbUrl, {
 const swaggerDefinition = {
     openapi: "3.0.3",
     info: {
-        name: "feels like API",
+        title: "feels like API",
+        description: "a weather api focus on feels like temperature",
+        contact: {
+            name: "FishGit2020",
+            url: "https://github.com/FishGit2020/concurrent"
+        },
         version: "1.0.0"
     }
 };
