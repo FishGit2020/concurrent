@@ -27,9 +27,15 @@ mongoose.connect(dbUrl, {
   useUnifiedTopology: true,
   useFindAndModify: false,
   useCreateIndex: true
-}, (error) => {
+}).then(() => {
+    console.log("Database connected");
+    
+    app.listen(port, () => {
+        console.log("Server runs at: " + port);
+    });
+}).catch((error) => {
     console.log(error.stack);
-});
+})
 
 // https://swagger.io/specification/
 const swaggerDefinition = {
@@ -149,8 +155,4 @@ app.post('/saveUser', (req, res) => {
             console.log(error.stack);
             res.status(500).send(error.message);
         })
-});
-
-app.listen(port, () => {
-    console.log("Server runs at: " + port);
 });
