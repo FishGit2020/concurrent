@@ -126,7 +126,7 @@ app.post('/saveUser', (req, res) => {
 
     userInfoSchema.validateAsync(req.body)
         .then((validatedBody) => {
-            console.log("Data validated: " + validatedBody);
+            console.log("Data validated: " + JSON.stringify(validatedBody));
 
             const post = new postUserInfo(validatedBody);
             post.save()
