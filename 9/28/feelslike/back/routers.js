@@ -1,6 +1,6 @@
 import express from 'express';
 import got from 'got';
-import userInfoSchema from './userInfoSchema.js';
+import {userInfoModel, userInfoSchema} from './userInfo.js';
 
 const routes = express.Router();
 const openWeatherApiKey = '3442bc148b46b294a5ce5abf9240896d';
@@ -53,7 +53,7 @@ routes.get('/feelslike/:cityName?', (req, res) => {
         console.log("found weather at " + cityName);
         res.send(weather.main);
     }).catch((error) => {
-        console.log(error.stack);
+        console.error(error.stack);
         res.status(500).send(error.message);
     });
 });
@@ -69,29 +69,97 @@ routes.get('/feelslike/:cityName?', (req, res) => {
  */
 routes.get('/getUserInfo', (req, res) => {
     console.log(new Date(), '/getUserInfo');
-    res.send("Hi");
+
+    userInfoModel.find({}).then((allUsers) => {
+        res.send(allUsers);
+    }).catch((error) => {
+        console.error(error.stack);
+        res.status(500).send(error.message);
+    });
 });
+
+/**
+ * @swagger
+ * /api/saveUserInfoAsync:
+ *   post:
+ *     description: save user info
+ *     requestBody:
+ *       description: save user and city to database
+ *       required: true
+ *       content:
+ *         'application/json':
+ *           schema:
+ *             properties:
+ *               name: 
+ *                 description: user name
+ *                 type: string
+ *               city:
+ *                 description: city name
+ *                 type: string
+ *     responses:
+ *       '201':
+ *         description: Created
+ */
+routes.post('/saveUserInfoAsync', async (req, res) => {
+    console.log(new Date(), '/saveUserInfo');
+
+    try {
+        console.log(req.body);
+        const value = await userInfoSchema.validateAsync(req.body);
+        
+        const userInfo = new userInfoModel(value);
+        const data = await userInfo.save();
+
+        console.log("data saved " + data);
+        res.send(data);
+    } catch (error) {
+        console.error(error.stack);
+        res.status(500).send(error.message);
+    }
+});
+
 
 /**
  * @swagger
  * /api/saveUserInfo:
  *   post:
  *     description: save user info
+ *     requestBody:
+ *       description: save user and city to database
+ *       required: true
+ *       content:
+ *         'application/json':
+ *           schema:
+ *             properties:
+ *               name: 
+ *                 description: user name
+ *                 type: string
+ *               city:
+ *                 description: city name
+ *                 type: string
  *     responses:
- *       '200':
- *         description: a successful response
+ *       '201':
+ *         description: Created
  */
 routes.post('/saveUserInfo', (req, res) => {
     console.log(new Date(), '/saveUserInfo');
+    
+    userInfoSchema.validateAsync(req.body).then((validatedBody) => {
+        console.log("data is valide");
 
-    const userInfo = new userInfoSchema;
-    userInfo.save(req.body).then((data) => {
-        console.log("Data saved");
-        res.send(data);
+        const userInfo = new userInfoModel(validatedBody);
+        userInfo.save().then((data) => {
+            console.log("data saved " + data);
+            res.send(data);
+        }).catch((error) => {
+            console.error("save data error: " + error.stack);
+            res.status(500).send("save data error: " + error.message);
+        })
     }).catch((error) => {
-        console.error(error.stack);
-        res.status(500).send(error.message);
-    });
+        console.error("request body validation error: " + error.stack);
+        res.status(500).send("request body validation error: " + error.message);
+    })
+
 });
 
 export default routes;
