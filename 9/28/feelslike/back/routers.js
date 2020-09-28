@@ -29,7 +29,9 @@ routes.get('/', (req, res) => {
  *         required: true
  *     responses:
  *       '200':
- *         description: a successful response
+ *         description: found the city
+ *       '500':
+ *         description: something is wrong
  */
 routes.get('/feelslike/:cityName?', (req, res) => {
     if (req.params.cityName === undefined || req.params.cityName === '') {
@@ -37,6 +39,7 @@ routes.get('/feelslike/:cityName?', (req, res) => {
         console.error( "feels like call missing city name");
         return;
     }
+
     const cityName = req.params.cityName;
     const url = `http://api.openweathermap.org/data/2.5/weather` + 
         `?q=${cityName}&appid=${openWeatherApiKey}&units=imperial`;
@@ -49,8 +52,7 @@ routes.get('/feelslike/:cityName?', (req, res) => {
     }).catch((error) => {
         console.log(error.stack);
         res.status(500).send(error.message);
-    })
-    
+    });
 });
 
 
