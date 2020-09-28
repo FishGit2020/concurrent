@@ -1,0 +1,17 @@
+some improvement I learned from searching online and building this app:
+
+mongoose connection built, then server start listen
+mongoose model class constructor requires collection singular name and schema
+mongoose model object is a 'document', use save() to save to database
+mongoose model class can find all data, query using find({}) 
+
+docker container create a perfect develop env, no concern of local setup
+nodemon docker runs great
+create-react-app docker runs great
+
+bash file build docker and run all in one command
+
+swagger jsdoc apis reads files with swagger yaml api
+swagger ui express has explore enabled looks better
+
+I like seperate swagger doc, user info schema, routes in different files, very clean
