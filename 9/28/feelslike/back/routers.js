@@ -1,5 +1,6 @@
 import express from 'express';
 import got from 'got';
+import userInfoSchema from './userInfoSchema.js';
 
 const routes = express.Router();
 const openWeatherApiKey = '3442bc148b46b294a5ce5abf9240896d';
@@ -14,9 +15,9 @@ const openWeatherApiKey = '3442bc148b46b294a5ce5abf9240896d';
  *         description: a successful response
  */
 routes.get('/', (req, res) => {
+    console.log(new Date(), '/');
     res.send("Hi");
 });
-
 
 /**
  * @swagger
@@ -34,6 +35,8 @@ routes.get('/', (req, res) => {
  *         description: something is wrong
  */
 routes.get('/feelslike/:cityName?', (req, res) => {
+    console.log(new Date(), '/feelslike');
+
     if (req.params.cityName === undefined || req.params.cityName === '') {
         res.status(500).send("missing city name");
         console.error( "feels like call missing city name");
@@ -55,8 +58,40 @@ routes.get('/feelslike/:cityName?', (req, res) => {
     });
 });
 
+/**
+ * @swagger
+ * /api/getUserInfo:
+ *   get:
+ *     description: get existed user info
+ *     responses:
+ *       '200':
+ *         description: a successful response
+ */
+routes.get('/getUserInfo', (req, res) => {
+    console.log(new Date(), '/getUserInfo');
+    res.send("Hi");
+});
 
+/**
+ * @swagger
+ * /api/saveUserInfo:
+ *   post:
+ *     description: save user info
+ *     responses:
+ *       '200':
+ *         description: a successful response
+ */
+routes.post('/saveUserInfo', (req, res) => {
+    console.log(new Date(), '/saveUserInfo');
 
-
+    const userInfo = new userInfoSchema;
+    userInfo.save(req.body).then((data) => {
+        console.log("Data saved");
+        res.send(data);
+    }).catch((error) => {
+        console.error(error.stack);
+        res.status(500).send(error.message);
+    });
+});
 
 export default routes;
