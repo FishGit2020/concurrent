@@ -19,6 +19,25 @@ routes.get('/', (req, res) => {
 
 /**
  * @swagger
+ * /api/getUsers:
+ *   get:
+ *     summary: get all users
+ *     description: get all users
+ *     responses:
+ *       '200':
+ *         description: a successful response
+ */
+routes.get('/getUsers', (req, res) => {
+    userInfoModel.find({}).then((data) => {
+        res.send(data);
+    }).catch((error) => {
+        console.error(error.stack);
+        res.status(500).send(error.message);
+    })
+});
+
+/**
+ * @swagger
  * /api/saveUser:
  *   post:
  *     summary: get all user info
