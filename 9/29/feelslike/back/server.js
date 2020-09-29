@@ -5,13 +5,10 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerDoc from './swaggerDoc.js';
 
 import mongoose from 'mongoose';
+import dbUrl from './dbConfig.js';
 
 const app = express();
 const port = process.env.PORT || 8080;
-const dbPw = 'dbUserPassword';
-const dbName = 'feelslikedb';
-const dbUrl = `mongodb+srv://dbUser:${dbPw}@cluster0.evesq.mongodb.net/` +
-    `${dbName}?retryWrites=true&w=majority`;
 
 app.use('/api', routers);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
