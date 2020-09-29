@@ -1,7 +1,9 @@
+import Axios from 'axios';
 import express from 'express';
 import { userInfoModel, userInfoSchema } from './userInfoSchema.js';
 
 const routes = express.Router();
+const weatherApiKey = '3442bc148b46b294a5ce5abf9240896d';
 
 /**
  * @swagger
@@ -15,6 +17,38 @@ const routes = express.Router();
  */
 routes.get('/', (req, res) => {
     res.send("Hello");
+});
+
+/**
+ * @swagger
+ * /api/weather/{city}:
+ *   get:
+ *     summary: get weather
+ *     description: get weather
+ *     parameters:
+ *       - name: city
+ *         in: path
+ *         required: true
+ *     responses:
+ *       '200':
+ *         description: a successful response
+ */
+routes.get('/weather/:city?', (req, res) => {
+    console.log("at weather");
+    if (req.params.city === undefined || req.params.city === '') {
+        res.status(500).send("missing city");
+        return;
+    }
+
+    const city = req.params.city;
+    const openWeatherUrl = `http://api.openweathermap.org/data/2.5/weather?` +
+        `q=${city}&appid=${weatherApiKey}&units=imperial`;
+    Axios.get(openWeatherUrl).then((axiosRes) => {
+        res.send(axiosRes.data);
+    }).catch((error) => {
+        console.error("weather url error" + error.stack);
+        res.status(500).send("weather url error" + error.message);
+    })
 });
 
 /**
