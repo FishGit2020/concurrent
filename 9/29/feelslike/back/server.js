@@ -5,13 +5,14 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerDoc from './swaggerDoc.js';
 
 import mongoose from 'mongoose';
-import dbUrl from './dbConfig.js';
+import { dbUrl } from './dbConfig.js';
 
 const app = express();
 const port = process.env.PORT || 8080;
 
 app.use('/api', routers);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc, {explorer: true}));
+app.use(express.json());
 
 mongoose.connect(dbUrl, {
     useNewUrlParser: true,
