@@ -1,0 +1,5 @@
+#!/bin/bash
+
+docker build -t gitfish2020/nodemon .
+docker run -it -p 5000:8080 -v $(pwd):/server -w /server gitfish2020/nodemon bash
+
