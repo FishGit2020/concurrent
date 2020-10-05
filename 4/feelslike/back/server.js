@@ -4,11 +4,14 @@ import express from 'express';
 import routes from './routes.js';
 import mongoose from 'mongoose';
 import { dbUrl } from './dbInfo.js';
+import { swaggerDoc } from './swaggerDoc.js';
+import swaggerUi from 'swagger-ui-express';
 
 const app = express();
 const port = process.env.PORT || 8080;
 
 // middleware
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 app.use('/api', routes);
 
 mongoose.connect(dbUrl, {
