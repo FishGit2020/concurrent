@@ -20,6 +20,25 @@ routes.get('/home', (req, res) => {
 
 /**
  * @swagger
+ * /api/getInfo:
+ *   get:
+ *     description: get user info from database
+ *     summary: get user info
+ *     responses:
+ *       '200':
+ *         description: a successful response
+ */
+routes.get('/getInfo', (req, res) => {
+    userModel.find({}).then((data) => {
+        res.send(data);
+    }).catch((error) => {
+        console.error(error.stack);
+        res.status(500).send(error.messge);
+    })
+});
+
+/**
+ * @swagger
  * /api/feelslike/{city}:
  *   get:
  *     description: return city feelslike temperature
