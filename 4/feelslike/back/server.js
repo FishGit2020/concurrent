@@ -11,8 +11,13 @@ const app = express();
 const port = process.env.PORT || 8080;
 
 // middleware
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
+app.use(express.json());
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc, {explorer: true}));
 app.use('/api', routes);
+
+app.post('/test', (req, res) => {
+    res.send(req.body);
+});
 
 mongoose.connect(dbUrl, {
     useNewUrlParser: true,
