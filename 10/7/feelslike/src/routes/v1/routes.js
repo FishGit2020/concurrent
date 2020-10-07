@@ -1,8 +1,8 @@
 'use strict';
 
 import express from 'express';
-import { feelslike } from './feelslike.js';
-import { getInfo, saveInfo, getAll, cacheUser } from './userInfo.js';
+import { feelslike, cacheWeather } from './feelslike.js';
+import { getInfo, putInfo, deleteInfo, getAll } from './userInfo.js';
 
 const routes = express.Router();
 
@@ -21,12 +21,12 @@ const routes = express.Router();
  *       200:
  *         description: successful response
  */
-routes.get('/feelslike/:city?', feelslike);
+routes.get('/feelslike/:city?', cacheWeather, feelslike);
 
 /**
  * @swagger
  * /api/v1/info/save:
- *   post:
+ *   put:
  *     tags:
  *     - userInfo
  *     description: save user information
@@ -37,14 +37,14 @@ routes.get('/feelslike/:city?', feelslike);
  *           schema:
  *             type: object
  *             properties:
- *               user:
- *                 description: user
+ *               name:
+ *                 description: a person
  *                 type: string
  *               city:
- *                 description: city
+ *                 description: city this person lives
  *                 type: string
  *           example:
- *             user: 'Bruce'
+ *             name: 'Bruce'
  *             city: 'Houston'
  *     responses:
  *       201:
@@ -52,25 +52,41 @@ routes.get('/feelslike/:city?', feelslike);
  *         content:
  *           application/json: {}
  */
-routes.post('/info/save', saveInfo);
-
+routes.put('/info/save', putInfo);
 
 /**
  * @swagger
- * /api/v1/info/get/{name}:
+ * /api/v1/info/find/{name}:
  *   get:
  *     tags:
  *     - userInfo
  *     description: get user info
- *     paramenters:
+ *     parameters:
  *     - name: name
  *       in: path
  *       required: true
  *     responses:
  *       200:
- *         description: successful
+ *         description: a successful response
  */
-routes.get('/info/get/:name?', cacheUser, getInfo);
+routes.get('/info/find/:name?', getInfo);
+
+/**
+ * @swagger
+ * /api/v1/info/delete/{name}:
+ *   delete:
+ *     tags:
+ *     - userInfo
+ *     description: get user info
+ *     parameters:
+ *     - name: name
+ *       in: path
+ *       required: true
+ *     responses:
+ *       200:
+ *         description: a successful response
+ */
+routes.delete('/info/delete/:name?', deleteInfo);
 
 /**
  * @swagger

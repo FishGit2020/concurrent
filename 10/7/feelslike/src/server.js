@@ -2,17 +2,18 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import { dbUrl } from './configs.js';
-import routesV1 from './routes/v1/routes.js';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDoc from './swaggerDoc.js';
-import routesHome from './routes/default.js';
+import routesV1 from './routes/v1/routes.js';
+import routesDefault from './routes/default.js';
 
 const app = express();
 const port = process.env.PORT || 5000;
 
+app.use(express.json());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc, {explorer: true}));
 app.use('/api/v1', routesV1);
-app.use('/home', routesHome);
+app.use('/home', routesDefault);
 
 mongoose.connect(dbUrl, {
     useNewUrlParser: true,
@@ -23,6 +24,6 @@ mongoose.connect(dbUrl, {
     app.listen(port, () => {
         console.log('Server is running at: ' + port);
     })
-}).catch((error) => {
-    console.error(error.stack);
+}).catch((err) => {
+    console.error(err.stack);
 })
