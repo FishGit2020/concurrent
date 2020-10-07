@@ -24,7 +24,7 @@ const cache = (req, res, next) => {
 }
 
 routes.get('/home', (req, res) => {
-    res.send("Hi");
+    res.send("<h1>Hi</hi>");
 });
 
 routes.get('/repo/:username', cache, (req, res) => {
