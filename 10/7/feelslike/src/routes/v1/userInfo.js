@@ -16,7 +16,7 @@ export const putInfo = (req, res) => {
 
         userInfo.save().then((info) => {
             console.log("Saved user info: " + info);
-            res.send(info);
+            res.status(201).send(info);
         }).catch((err) => {
             console.error(errro.stack);
             res.status(500).send(err.message);

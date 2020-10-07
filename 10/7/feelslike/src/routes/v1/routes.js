@@ -48,7 +48,7 @@ routes.get('/feelslike/:city?', cacheWeather, feelslike);
  *             city: 'Houston'
  *     responses:
  *       201:
- *         description: save successed
+ *         description: save successful
  *         content:
  *           application/json: {}
  */
