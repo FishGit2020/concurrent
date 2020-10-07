@@ -18,7 +18,7 @@ export const feelslike = (req, res) => {
     const url = getUrl(req.params.city);
     Axios.get(url).then((axiosRes) => {
         const weather = axiosRes.data;
-        console.log("Got weather response: " + weather);
+        console.log("Got weather response: " + JSON.stringify(weather));
         res.send(weather);
     }).catch((error) => {
         console.error(error.stack);
