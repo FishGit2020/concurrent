@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  redisCache:
+    image: 'docker.io/bitnami/redis'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+    ports:
+      - 6379:6379
+    volumes:
+      - 'redis_data:/bitnami/redis/data'
+    command:
+      /opt/bitnami/scripts/redis/run.sh --maxmemory 100mb
+    networks:
+      - app-tier1
+
+  server:
+    build:
+      context: .
+      dockerfile: ./build/dockerfile.dev
+    ports:
+      - 5000:5000
+    volumes:
+      - './src:/server'
+    networks:
+      - app-tier1
+
+networks:
+  app-tier1:
+
+volumes:
+  redis_data:
+    driver: local
