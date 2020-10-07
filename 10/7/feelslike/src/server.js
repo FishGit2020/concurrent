@@ -19,10 +19,10 @@ mongoose.connect(dbUrl, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(() => {
-    console.log('Database is connected.')
+    console.log('Database connection established.')
 
     app.listen(port, () => {
-        console.log('Server is running at: ' + port);
+        console.log('Server is running on port: ' + port);
     })
 }).catch((err) => {
     console.error(err.stack);
