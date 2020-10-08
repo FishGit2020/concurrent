@@ -13,7 +13,7 @@ const routes = express.Router();
  *       200:
  *         description: successful
  */
-routes.get('/home', (req, res) => {
+routes.get('/', (req, res) => {
     res.send('<h1>Welcome</h1>');
 });
 
