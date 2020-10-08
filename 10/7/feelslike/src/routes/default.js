@@ -28,7 +28,7 @@ routes.get('/home', (req, res) => {
  *       200:
  *         description: successful
  */
-routes.get('/home', (req, res) => {
+routes.get('/health', (req, res) => {
     res.send('good');
 });
 

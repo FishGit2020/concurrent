@@ -25,7 +25,7 @@ export const putInfo = (req, res) => {
     }).catch((err) => {
         console.error(err.stack);
         res.status(500).send(err.message);
-    })
+    });
 };
 
 export const getInfo = (req, res) => {
