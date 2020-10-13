@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  server:
+    build:
+      context: ./docker/
+      dockerfile: ./dockerfile.dev
+    ports:
+      - 5000:8080
+    volumes:
+      - ./src:/server
+    networks:
+      - app-tier1
+
+networks:
+  app-tier1:
+
