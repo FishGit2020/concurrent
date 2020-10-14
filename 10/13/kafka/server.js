@@ -9,10 +9,18 @@ const client = new kafka.KafkaClient({kafkaHost: 'kafka:9092'});
 const producer = new kafka.Producer(client);
 
 const topics = [
-    { topic: 'topic1', partition: 1 }
+    { topic: 'test', partition: 1 }
 ]
 
-// const consumer = new kafka.Consumer(client, topics);
+const consumer = new kafka.Consumer(client, topics);
+
+consumer.on('ready', () => {
+    console.log('Consumer is ready');
+});
+
+consumer.on('error', (err) => {
+    console.log('Consumer error: ' + err.stack);
+});
 
 client.on('ready', () => {
     console.log("Client is ready.");
@@ -39,8 +47,7 @@ app.get('/kafka/send', (req, res) => {
     console.log("At kafka send.");
 
     const msg = [
-        { topic: 'topic1', message: 'hi', timestamp: new Date() },
-        { topic: 'topic2', message: 'hello', timestamp: new Date() },
+        { topic: 'test', message: 'hi' },
     ];
 
     producer.send(msg, (err, data) => {
