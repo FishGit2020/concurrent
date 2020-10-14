@@ -1,53 +1,22 @@
 
 import express from 'express';
-import kafka from 'kafka-node';
+import { producer } from './myKafka.js';
 
 const app = express();
 const port = process.env.PORT || 8080;
-
-const client = new kafka.KafkaClient({kafkaHost: 'kafka:9092'});
-const producer = new kafka.Producer(client);
-
-const topics = [
-    { topic: 'test', partition: 1 }
-]
-
-const consumer = new kafka.Consumer(client, topics);
-
-consumer.on('ready', () => {
-    console.log('Consumer is ready');
-});
-
-consumer.on('error', (err) => {
-    console.log('Consumer error: ' + err.stack);
-});
-
-client.on('ready', () => {
-    console.log("Client is ready.");
-});
-
-client.on('error', (err) => {
-    console.log("Client error: " + err.stack);
-});
-
-producer.on('ready', () => {
-    console.log("Producer is ready.");
-});
-
-producer.on('error', (err) => {
-    console.log("Producer error: " + err.stack);
-});
 
 app.get('/', (req, res) => {
     console.log("Called Hi");
     res.send("Hi");
 });
 
-app.get('/kafka/send', (req, res) => {
+app.get('/kafka/send/:msg', (req, res) => {
     console.log("At kafka send.");
 
     const msg = [
-        { topic: 'test', message: 'hi' },
+        { topic: 'test', messages: req.params.msg },
+        { topic: 'test-1', messages: req.params.msg },
+        { topic: 'test-2', messages: req.params.msg }
     ];
 
     producer.send(msg, (err, data) => {
