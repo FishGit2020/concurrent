@@ -8,11 +8,11 @@ const port = process.env.PORT || 8080;
 const client = new kafka.KafkaClient({kafkaHost: 'kafka:9092'});
 const producer = new kafka.Producer(client);
 
-const consumer = new kafka.HighLevelConsumer(client, topics);
-
 const topics = [
-    { topic: 'test', partition: 1 }
+    { topic: 'topic1', partition: 1 }
 ]
+
+// const consumer = new kafka.Consumer(client, topics);
 
 client.on('ready', () => {
     console.log("Client is ready.");
