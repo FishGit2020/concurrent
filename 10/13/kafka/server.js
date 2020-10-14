@@ -1,6 +1,6 @@
 
 import express from 'express';
-import { producer } from './myKafka.js';
+import { producer, admin } from './myKafka.js';
 
 const app = express();
 const port = process.env.PORT || 8080;
@@ -28,6 +28,13 @@ app.get('/kafka/send/:msg', (req, res) => {
         res.send(data);
     });
 })
+
+app.get('/kafka/topics', (req, res) => {
+    admin.listTopics((err, resTopics) => {
+        console.log('Topics: ', resTopics);
+        res.send(resTopics);
+    });
+});
 
 app.listen(port, () => {
     console.log("Server is running on port: " + port);

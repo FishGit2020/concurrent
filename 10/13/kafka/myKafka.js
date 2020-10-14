@@ -8,6 +8,8 @@ const consumerTest = new kafka.Consumer(client, [{ topic: 'test' }], { autoCommi
 const consumerTest1 = new kafka.Consumer(client, [{ topic: 'test-1' }], { autoCommit: false});
 const consumerTest2 = new kafka.Consumer(client, [{ topic: 'test-2' }], { autoCommit: false});
 
+export const admin = new kafka.Admin(client);
+
 client.on('ready', () => {
     console.log("Client is ready.");
 });
